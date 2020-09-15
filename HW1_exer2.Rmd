@@ -1,7 +1,5 @@
 ---
-title: "HW1_exer2.Rmd"
-author: "Zahida"
-date: "9/11/2020"
+title: "HW1_exer2"
 output: html_document
 ---
 
@@ -9,22 +7,105 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+```{r}
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+# part 1
+# install.packages("quantmod")
+library(quantmod)
+library(dplyr)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+# part 2
+tickers = c('VALE', 'CSCO', 'INTC', 'WFC')
+src = 'yahoo'
+from_d = '2019-01-01'
+end_d = Sys.Date()
+datas = getSymbols(Symbols = tickers, from = from_d, to = end_d, src = src)
 
-```{r cars}
-summary(cars)
+# part_3
+library(dplyr)
+for(tkr in tickers){
+  get(tkr)[,4] %>% plot(main = tkr) -> p
+  print(p)
+  
+}
+
+# part_4
+c(VALE, CSCO, INTC, WFC) %>% candleChart()
+
+
+# part_5
+tiker_info = list(VALE, CSCO, INTC, WFC)
+lapply(tiker_info, function(x){
+  tmp = x[,4] %>% as.numeric()
+  return(c(mean(tmp), var(tmp)))
+  
+}) %>% Reduce(rbind,.) -> mean_var
+colnames(mean_var) = c('mean', 'variance')
+rownames(mean_var) = c('VALE', 'CSCO', 'INTC', 'WFC')
+mean_var
+
+
+# part_6
+from_d = '2010-9-13'
+datas = getSymbols(Symbols = tickers, from = from_d, to = end_d, src = src)
+
+get_sharp_ratio = function(x, rf = 0.003){
+  rt = dailyReturn(x)
+  exc = (rt - rf ) %>% mean()
+  sigm = var(rt) ^ 0.5
+  
+  sp = (exc / sigm )* (252 ^ 0.5)
+  
+  return(sp %>% as.numeric())
+  
+  
+  
+}
+sharp_list = c()
+for(tkr in tickers){
+  
+  
+  sharp_list = c(sharp_list, get(tkr)[,4] %>% get_sharp_ratio())
+  
+  
+}
+matrix(sharp_list) -> sharp_info
+colnames(sharp_info) = c('sharp_ratio')
+rownames(sharp_info) = tickers
+sharp_info
+
+
+
+# part 7
+
+close_return = c()
+for(tkr in tickers){
+  
+  close_return = cbind(close_return , dailyReturn(get(tkr)[,4]))
+
+}
+
+colnames(close_return) = tickers
+close_return %>% head()
+wts = rep(0.25, 4)
+
+close_return$portfolio = close_return %*% wts
+close_return %>% head()
+close_return = as.data.frame(close_return)
+su = summary(close_return)
+var(close_return) %>% diag() -> variance
+rbind(su, variance)
+
+
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+
+
+
+
