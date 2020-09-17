@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-### Your Name
+### Your Name:Hongqian Sun
 
 ####  Picture with caption
 
@@ -48,9 +48,8 @@ plot(year,rate)
 
 ```{r}
 library(DT)
-CLASS = c('Class A', 'Class B', 'Class C')
-TIME = c('Monday', 'Monday', 'Sunday')
-
+CLASS = c('MATH5110','MATH5200','MATH5310','MATH5500','MATH5670', 'STAT5210', 'STAT5600')
+TIME = c('MWF11:00-11:50am','TR12:30-1:45pm', 'MWF10:00-10:50am', 'MWF12:00-12:50pm','TR9:30-10:45am','MWF2:00-2:50pm','TR3:30-4:45pm')
 d = data.frame(CLASS, TIME)
 datatable(d)
 
