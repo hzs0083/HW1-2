@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction
 
-### Your Name:Hongqian Sun
+### Your Name Hongqian Sun
 
 ####  Picture with caption
 
@@ -46,13 +46,20 @@ plot(year,rate)
 
 #### Table
 
-```{r}
-library(DT)
-CLASS = c('MATH5110','MATH5200','MATH5310','MATH5500','MATH5670', 'STAT5210', 'STAT5600')
-TIME = c('MWF11:00-11:50am','TR12:30-1:45pm', 'MWF10:00-10:50am', 'MWF12:00-12:50pm','TR9:30-10:45am','MWF2:00-2:50pm','TR3:30-4:45pm')
-d = data.frame(CLASS, TIME)
-datatable(d)
+```{r table2, echo=FALSE, message=FALSE, results='asis', warnings=FALSE}
+tabl
 
+| Class     | Time             |
+|-----------|------------------|
+| STAT 5600 | 3:30-4:45  (TR)  |
+| MATH 5200 | 12:30-1:45 (TR)  |
+| STAT 5210 | 2:00-2:50  (MWF) |
+| MATH 5110 | 11:00-11:50(MWF) |
+| MATH 5310 | 10:00-10:50(MWF) |
+| MATH 5670 | 9:30-10:45 (TR)  |
+| MATH 5500 | 12:00-12:50(MWF) |
+
+  cat(tabl)
 ```
 
 
